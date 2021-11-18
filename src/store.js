@@ -1,8 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import resultsReducer from './Reducers/results';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import filesReducer from './Reducers/files';
 
 export default configureStore({
   reducer: {
-    results: resultsReducer,
+    files: filesReducer,
+    middleware: getDefaultMiddleware({
+      serializableCheck: {
+        // ignoredActions: ['files/addFile'],
+      },
+    }),
   },
 });

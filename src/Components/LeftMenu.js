@@ -8,11 +8,32 @@ import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { MyDropzone } from './MyDropzone';
+import { setSelectedFile } from '../Reducers/files';
+import { makeStyles } from '@mui/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const drawerWidth = 290;
+const theme = createTheme();
+const useStyles = makeStyles({
+  activeItem: {
+    backgroundColor: theme.palette.info.light,
+    '&:hover': {
+      backgroundColor: theme.palette.info.main,
+    },
+  },
+});
 
 export default function LeftMenu() {
-  const results = useSelector((state) => state.results.results);
+  console.log(theme);
+
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const files = useSelector((state) => state.files.files);
+  const selected = useSelector((state) => state.files.selected);
+
+  const handleFileOpen = (e, fileId) => {
+    dispatch(setSelectedFile(fileId));
+  };
 
   return (
     <Drawer
@@ -25,14 +46,19 @@ export default function LeftMenu() {
     >
       <Toolbar />
       <Box sx={{ overflow: 'auto' }}>
-        {results.length > 0 && (
+        {files.length > 0 && (
           <div>
             <List>
-              {results.map((result, index) => (
-                <ListItem button key={`result-` + index}>
+              {files.map((file, index) => (
+                <ListItem
+                  button
+                  className={file.id === selected.id ? classes.activeItem : ''}
+                  key={`result-` + index}
+                  onClick={(e) => handleFileOpen(e, file.id)}
+                >
                   <ListItemText
-                    title={result.file.name}
-                    primary={result.file.name}
+                    title={file.file.name}
+                    primary={file.file.name}
                     primaryTypographyProps={{
                       variant: 'subtitle2',
                       style: {

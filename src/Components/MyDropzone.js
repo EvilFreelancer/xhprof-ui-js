@@ -2,9 +2,8 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { makeStyles } from '@mui/styles';
-import { addResult } from '../Reducers/results';
+import { addFile } from '../Reducers/files';
 
-// Custom styles
 const useStyles = makeStyles({
   dropzoneArea: {
     minHeight: '190px !important',
@@ -25,8 +24,9 @@ export function MyDropzone() {
    * @type {(function(*=): void)|*}
    */
   const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.map(async (acceptedFile) => {
-      await dispatch(addResult(acceptedFile));
+    acceptedFiles.map((acceptedFile) => {
+      console.log(acceptedFile);
+      dispatch(addFile(acceptedFile));
     });
   }, []);
 
