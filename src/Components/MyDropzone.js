@@ -24,9 +24,16 @@ export function MyDropzone() {
    * @type {(function(*=): void)|*}
    */
   const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.map((acceptedFile) => {
-      console.log(acceptedFile);
-      dispatch(addFile(acceptedFile));
+    acceptedFiles.map(async (acceptedFile) => {
+      try {
+        // Parse JSON
+        let jsonRaw = await acceptedFile.text();
+        let jsonParsed = JSON.parse(jsonRaw);
+        // Dispatch changes
+        dispatch(addFile({ file: acceptedFile, json: jsonParsed }));
+      } catch (e) {
+        console.warn('Unable to parse JSON');
+      }
     });
   }, []);
 

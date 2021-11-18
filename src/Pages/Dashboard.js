@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/Navbar';
 import { Box, CssBaseline } from '@mui/material';
 import { FilePreview } from '../Components/FilePreview';
 import LeftMenu from '../Components/LeftMenu';
+import { useSelector } from 'react-redux';
 
 export default function Dashboard() {
-  const [file, setFile] = useState([]);
-  const [filter, setFilter] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const selected = useSelector((state) => state.files.selected);
 
-  const handleFileCleanup = () => {
-    setFile([]);
-  };
+  useEffect(function () {
+    if (selected.json) {
+      setShowPreview(true);
+    } else {
+      setShowPreview(false);
+    }
+  });
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Navbar
-        setFilter={setFilter}
-        file={file}
-        handleFileCleanup={handleFileCleanup}
-      />
+      <Navbar />
       <LeftMenu />
-      <Box sx={{ flexGrow: 1, p: 3 }}>
-        {file.length > 0 && <FilePreview file={file} filter={filter} />}
-      </Box>
+      <Box sx={{ flexGrow: 1, p: 3 }}>{showPreview && <FilePreview />}</Box>
     </Box>
   );
 }

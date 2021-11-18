@@ -1,13 +1,12 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { combineReducers } from '@reduxjs/toolkit';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import filesReducer from './Reducers/files';
+import paginationReducer from './Reducers/pagination';
 
-export default configureStore({
-  reducer: {
-    files: filesReducer,
-    middleware: getDefaultMiddleware({
-      serializableCheck: {
-        // ignoredActions: ['files/addFile'],
-      },
-    }),
-  },
+const rootReducer = combineReducers({
+  files: filesReducer,
+  pagination: paginationReducer,
 });
+
+export default createStore(rootReducer, applyMiddleware(thunk));

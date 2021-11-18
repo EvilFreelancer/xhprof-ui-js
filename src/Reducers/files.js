@@ -1,4 +1,4 @@
-import { createSlice, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { find } from 'lodash';
 
 export const filesSlice = createSlice({
@@ -16,11 +16,20 @@ export const filesSlice = createSlice({
      * @return {number}
      */
     addFile: (state, action) => {
-      state.files[state.sequence] = {
+      // Save file
+      let payload = {
         id: state.sequence,
-        file: action.payload,
+        name: action.payload.file.name,
+        size: action.payload.file.size,
+        json: action.payload.json,
       };
+      state.files[state.sequence] = payload;
       state.sequence += 1;
+
+      // Select first file
+      if (state.sequence === 1) {
+        state.selected = payload;
+      }
     },
 
     /**
@@ -29,7 +38,11 @@ export const filesSlice = createSlice({
      * @param action
      */
     setSelectedFile: (state, action) => {
-      state.selected = find(state.files, { id: parseInt(action.payload) });
+      if (null === action.payload) {
+        state.selected = {};
+      } else {
+        state.selected = find(state.files, { id: parseInt(action.payload) });
+      }
     },
   },
 });

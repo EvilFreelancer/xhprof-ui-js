@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -9,6 +9,8 @@ import {
   TableSortLabel,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPage } from '../Reducers/pagination';
 
 // Custom styles
 const useStyles = makeStyles({
@@ -54,18 +56,14 @@ const headers = [
   },
 ];
 
-export function SimpleTable({
-  results,
-  sortBy,
-  sortDirection,
-  handleSort,
-  filter,
-}) {
+export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   // Pagination
+  const filter = useSelector((state) => state.pagination.filter);
+  const page = useSelector((state) => state.pagination.page);
   const [itemsPerPage, setItemsPerPage] = useState(100);
-  const [page, setPage] = useState(0);
 
   /**
    * Let's change format of time from microseconds to something more readable
@@ -90,11 +88,11 @@ export function SimpleTable({
 
   /**
    * What to do if page was changed
-   * @param eventx
+   * @param event
    * @param pageNumber
    */
   const onPageChange = (event, pageNumber) => {
-    setPage(pageNumber);
+    dispatch(setPage(pageNumber));
   };
 
   /**
@@ -140,7 +138,7 @@ export function SimpleTable({
   return (
     <div>
       <Table
-        fixedHeader={false}
+        fixedheader={false}
         style={{ tableLayout: 'auto', marginBottom: '80px' }}
       >
         <TableHead>

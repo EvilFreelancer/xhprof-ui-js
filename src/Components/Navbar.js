@@ -2,14 +2,19 @@ import React from 'react';
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from './Search';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from '../Reducers/pagination';
 
-export default function Navbar({ file, handleFileCleanup, setFilter }) {
+export default function Navbar() {
+  const dispatch = useDispatch();
+  const selected = useSelector((state) => state.files.selected);
+
   /**
    * Filter values dynamicaly
    * @param event
    */
   const handleFilter = (event) => {
-    setFilter(event.target.value);
+    dispatch(setFilter(event.target.value));
   };
 
   return (
@@ -34,7 +39,7 @@ export default function Navbar({ file, handleFileCleanup, setFilter }) {
         >
           Xhprof-UI.js
         </Typography>
-        {file.length > 0 && (
+        {!!selected.json && (
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
