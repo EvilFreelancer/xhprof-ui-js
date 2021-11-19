@@ -11,6 +11,11 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPage } from '../Reducers/pagination';
+import {
+  formatMicroseconds,
+  formatBytes,
+  formatNumber,
+} from '../Utils/StringFormat';
 
 // Custom styles
 const useStyles = makeStyles({
@@ -38,12 +43,11 @@ const headers = [
   { name: 'function', label: 'Function', width: '45%' },
   { name: 'calls', label: 'Calls', width: '5%' },
   { name: 'wtime', label: 'Wall Time', width: '10%' },
-  { name: 'cpu', label: 'CPU Time', width: '5%' },
-  { name: 'mem_usage', label: 'Memory', sub: '(bytes)', width: '5%' },
+  { name: 'cpu', label: 'CPU', width: '5%' },
+  { name: 'mem_usage', label: 'Memory', width: '5%' },
   {
     name: 'mem_usage_peek',
     label: 'Peek',
-    sub: '(bytes)',
     width: '5%',
   },
   { name: 'wtime_perc', label: 'IWall%', width: '5%' },
@@ -64,27 +68,6 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
   const filter = useSelector((state) => state.pagination.filter);
   const page = useSelector((state) => state.pagination.page);
   const [itemsPerPage, setItemsPerPage] = useState(100);
-
-  /**
-   * Let's change format of time from microseconds to something more readable
-   * @param microseconds
-   * @returns {string}
-   */
-  const formatMicroseconds = (microseconds) => {
-    let milliseconds = microseconds / 1000;
-    let time = new Date(milliseconds);
-    let ms = time.getMilliseconds();
-    let ss = time.getSeconds();
-
-    let output = '';
-    if (ss > 0) {
-      output = ss + '.' + ms + ' s';
-    } else {
-      output = ms + ' ms';
-    }
-
-    return output;
-  };
 
   /**
    * What to do if page was changed
@@ -120,25 +103,10 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
     // Then all child above
   };
 
-  /**
-   * Convert number to readable format
-   * @param number
-   * @param toFixed
-   * @returns {string}
-   */
-  const formatNumber = (number, toFixed = null) => {
-    let tmpNumber = number;
-    if (toFixed) {
-      tmpNumber = number.toFixed(toFixed);
-    }
-
-    return tmpNumber.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  };
-
   return (
     <div>
       <Table
-        fixedheader={false}
+        fixedheader="false"
         style={{ tableLayout: 'auto', marginBottom: '80px' }}
       >
         <TableHead>
@@ -195,11 +163,17 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                   >
                     {formatMicroseconds(result.cpu) ?? ''}
                   </TableCell>
-                  <TableCell align={`right`}>
-                    {formatNumber(result.mem_usage) ?? ''}
+                  <TableCell
+                    align={`right`}
+                    title={result.mem_usage + ' bytes'}
+                  >
+                    {formatBytes(result.mem_usage) ?? ''}
                   </TableCell>
-                  <TableCell align={`right`}>
-                    {formatNumber(result.mem_usage_peek) ?? ''}
+                  <TableCell
+                    align={`right`}
+                    title={result.mem_usage_peek + ' bytes'}
+                  >
+                    {formatBytes(result.mem_usage_peek) ?? ''}
                   </TableCell>
                   <TableCell align={`right`}>
                     {formatNumber(result.wtime_perc, 2) + '%' ?? ''}
@@ -219,7 +193,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
       </Table>
       <TablePagination
         sx={{ boxShadow: 4 }}
-        justifyContent="center"
+        justifycontent="center"
         rowsPerPage={itemsPerPage}
         rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]}
         onRowsPerPageChange={(element) => {

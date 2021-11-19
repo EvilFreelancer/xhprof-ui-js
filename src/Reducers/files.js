@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { find } from 'lodash';
+import { parseJson } from '../Utils/FilesProcessing';
 
 export const filesSlice = createSlice({
   name: 'files',
@@ -22,6 +23,7 @@ export const filesSlice = createSlice({
         name: action.payload.file.name,
         size: action.payload.file.size,
         json: action.payload.json,
+        result: parseJson(action.payload.json),
       };
       state.files[state.sequence] = payload;
       state.sequence += 1;
