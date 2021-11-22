@@ -17,8 +17,10 @@ import {
   formatBytes,
   formatNumber,
 } from '../Utils/StringFormat';
+import { createTheme } from '@material-ui/core/styles';
 
 // Custom styles
+const theme = createTheme();
 const useStyles = makeStyles({
   cell: {
     whiteSpace: 'nowrap',
@@ -32,13 +34,20 @@ const useStyles = makeStyles({
     top: 64,
     background: 'white',
   },
-  displayNone: {
-    display: 'none',
+  bold: {
+    fontWeight: 'bold',
   },
   fab: {
     position: 'fixed',
     bottom: '10px',
     background: '#fff',
+  },
+  clickable: {
+    textDecoration: 'none',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
 });
 
@@ -79,7 +88,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
       return true;
     }
 
-    let tmpFilter = filterParentChild.toLowerCase();
+    let tmpFilter = filter.toLowerCase();
     return (
       string.function.toLowerCase().indexOf(tmpFilter) !== -1 ||
       string.parent.toLowerCase().indexOf(tmpFilter) !== -1
@@ -178,7 +187,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                   direction={sortDirection}
                   onClick={() => handleSort(header.name)}
                 >
-                  <Typography variant="h8" component="span">
+                  <Typography variant="body" className={classes.bold}>
                     {header.label}
                   </Typography>
                 </TableSortLabel>
@@ -206,14 +215,6 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                             ? `left`
                             : `right`
                         }
-                        onClick={() => {
-                          if ('function' === column.name) {
-                            handleFilterParentChild(result.function);
-                          }
-                          if ('parent' === column.name) {
-                            handleFilterParentChild(result.parent);
-                          }
-                        }}
                         title={handleTitle(result[column.name], column.format)}
                         sx={{
                           display: enabledColumns.includes(column.name)
@@ -221,7 +222,24 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                             : 'none',
                         }}
                       >
-                        {handleText(result[column.name], column.format)}
+                        <Typography
+                          variant="body1"
+                          onClick={() => {
+                            if ('function' === column.name) {
+                              handleFilterParentChild(result.function);
+                            }
+                            if ('parent' === column.name) {
+                              handleFilterParentChild(result.parent);
+                            }
+                          }}
+                          className={
+                            ['function', 'parent'].includes(column.name)
+                              ? classes.clickable
+                              : ''
+                          }
+                        >
+                          {handleText(result[column.name], column.format)}
+                        </Typography>
                       </TableCell>
                     );
                   })}
