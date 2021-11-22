@@ -17,13 +17,17 @@ export const filesSlice = createSlice({
      * @return {number}
      */
     addFile: (state, action) => {
+      let parsedJson = parseJson(action.payload.json);
+
       // Save file
       let payload = {
         id: state.sequence,
         name: action.payload.file.name,
         size: action.payload.file.size,
         json: action.payload.json,
-        result: parseJson(action.payload.json),
+        result: parsedJson.output,
+        callsTotal: parsedJson.callsTotal,
+        main: action.payload.json['main()'],
       };
       state.files[state.sequence] = payload;
       state.sequence += 1;

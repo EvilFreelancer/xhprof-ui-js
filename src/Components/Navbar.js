@@ -1,9 +1,10 @@
 import React from 'react';
-import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material';
+import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from './Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from '../Reducers/pagination';
+import ColumnsButtonAndModal from './Modals/ColumnsButtonAndModal';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export default function Navbar() {
             />
           </Search>
         )}
+        <ColumnsButtonAndModal />
       </Toolbar>
     </AppBar>
   );

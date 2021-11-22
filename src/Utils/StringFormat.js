@@ -23,9 +23,10 @@ export const formatMicroseconds = (microseconds) => {
  * Convert number to readable format
  * @param {number|null} number
  * @param {number|null} toFixed
+ * @param {string|null} suffix
  * @returns {string|null}
  */
-export const formatNumber = (number = null, toFixed = null) => {
+export const formatNumber = (number = null, toFixed = null, suffix = null) => {
   if (null === number) {
     return null;
   }
@@ -35,7 +36,9 @@ export const formatNumber = (number = null, toFixed = null) => {
     tmpNumber = number.toFixed(toFixed);
   }
 
-  return tmpNumber.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  let output = tmpNumber.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+
+  return null !== suffix ? output + suffix : output;
 };
 
 /**

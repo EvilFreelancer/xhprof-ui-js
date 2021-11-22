@@ -1,21 +1,24 @@
 /**
  * Convert JSON to array with calculated details
  * @param json
- * @return {[{
- *    function: text,
+ * @return {{
+ *  callsTotal: number,
+ *  output: [{
  *    parent: text,
+ *    function: text,
  *    child: text,
  *    calls: number,
- *    calls_perc: number,
  *    wtime: number,
- *    wtime_perc: number,
  *    cpu: number,
- *    cpu_perc: number,
  *    mem_usage: number,
- *    mem_usage_perc: number,
  *    mem_usage_peek: number,
+ *    calls_perc: number,
+ *    wtime_perc: number,
+ *    cpu_perc: number,
+ *    mem_usage_perc: number,
  *    mem_usage_peek_perc: number
- * }]}
+ *  }]
+ * }}
  */
 export const parseJson = (json) => {
   // Main object for calculation
@@ -30,38 +33,43 @@ export const parseJson = (json) => {
   entries.map((entry) => {
     let parentChild = entry[0].split('==>');
     callsTotal += parseInt(entry[1]['ct']);
-    output.push({
+
+    // Build object to push
+    let item = {
       function: parentChild[1] ?? parentChild[0],
       parent: parentChild[0],
       child: parentChild[1],
-
-      // Default
       calls: entry[1]['ct'],
       wtime: entry[1]['wt'],
-      wtime_perc: (entry[1]['wt'] / main['wt']) * 100,
+      wtime_perc: (entry[1]['wt'] / main.wt) * 100,
+    };
 
-      // XHPROF_FLAGS_MEMORY
-      mem_usage: entry[1]['mu'] ?? null,
-      mem_usage_perc: entry[1]['mu']
-        ? (entry[1]['mu'] / main['mu']) * 100
-        : null,
-      mem_usage_peek: entry[1]['pmu'] ?? null,
-      mem_usage_peek_perc: entry[1]['pmu']
-        ? (entry[1]['pmu'] / main['pmu']) * 100
-        : null,
+    // XHPROF_FLAGS_CPU
+    if ('cpu' in main) {
+      item.cpu = entry[1]['cpu'];
+      item.cpu_perc = (entry[1]['cpu'] / main.cpu) * 100;
+    }
 
-      // XHPROF_FLAGS_CPU
-      cpu: entry[1]['cpu'] ?? null,
-      cpu_perc: entry[1]['cpu'] ? (entry[1]['cpu'] / main['cpu']) * 100 : null,
-    });
+    // XHPROF_FLAGS_MEMORY
+    if ('mu' in main) {
+      item.mem_usage = entry[1]['mu'];
+      item.mem_usage_perc = (entry[1]['mu'] / main.mu) * 100;
+    }
+    if ('pmu' in main) {
+      item.mem_usage_peek = entry[1]['pmu'];
+      item.mem_usage_peek_perc = (entry[1]['pmu'] / main.pmu) * 100;
+    }
+
+    // Append object to array
+    output.push(item);
   });
 
   // Calculate percent of calls
-  output.map((entry) => {
-    entry.calls_perc = (entry.calls / callsTotal) * 100;
+  output.map((item) => {
+    item.calls_perc = (item.calls / callsTotal) * 100;
   });
 
   // TODO: Here probably will also be need some additional operations
 
-  return output;
+  return { callsTotal: callsTotal, output: output };
 };

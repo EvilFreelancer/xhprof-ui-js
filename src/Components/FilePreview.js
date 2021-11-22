@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { SimpleTable } from './SimpleTable';
 import orderBy from 'lodash/orderBy';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 
 export function FilePreview() {
@@ -57,7 +64,51 @@ export function FilePreview() {
 
   return (
     <div>
-      <Box>TODO: Charts</Box>
+      <Grid mt={5}>
+        <Grid item xs={6}>
+          <Box>
+            {selected.main && (
+              <List
+                sx={{ backgroundColor: (theme) => theme.palette.grey[100] }}
+              >
+                <ListItem>
+                  <ListItemText>
+                    <Typography variant="h6" component="h2">
+                      Overall Summary
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    Total Incl. Wall Time (microsec): {selected.main.wt}{' '}
+                    microsecs
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    Total Incl. CPU (microsecs): {selected.main.cpu} microsecs
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    Total Incl. MemUse (bytes): {selected.main.mu} bytes
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    Total Incl. PeakMemUse (bytes): {selected.main.pmu} bytes
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    Number of Function Calls: {selected.callsTotal}
+                  </ListItemText>
+                </ListItem>
+              </List>
+            )}
+          </Box>
+        </Grid>
+      </Grid>
       <SimpleTable
         results={orderBy(results, [sortBy, 'function'], [sortDirection, 'asc'])}
         sortBy={sortBy}

@@ -31,34 +31,15 @@ const useStyles = makeStyles({
     top: 64,
     background: 'white',
   },
+  displayNone: {
+    display: 'none',
+  },
   fab: {
     position: 'fixed',
     bottom: '10px',
     background: '#fff',
   },
 });
-
-// List of headers
-const headers = [
-  { name: 'function', label: 'Function', width: '45%' },
-  { name: 'calls', label: 'Calls', width: '5%' },
-  { name: 'wtime', label: 'Wall Time', width: '10%' },
-  { name: 'cpu', label: 'CPU', width: '5%' },
-  { name: 'mem_usage', label: 'Memory', width: '5%' },
-  {
-    name: 'mem_usage_peek',
-    label: 'Peek',
-    width: '5%',
-  },
-  { name: 'wtime_perc', label: 'IWall%', width: '5%' },
-  { name: 'cpu_pecr', label: 'ICpu%', width: '5%' },
-  { name: 'mem_usage_perc', label: 'IMU%', width: '5%' },
-  {
-    name: 'mem_usage_peek_perc',
-    label: 'IPMU%',
-    width: '5%',
-  },
-];
 
 export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
   const dispatch = useDispatch();
@@ -68,6 +49,12 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
   const filter = useSelector((state) => state.pagination.filter);
   const page = useSelector((state) => state.pagination.page);
   const [itemsPerPage, setItemsPerPage] = useState(100);
+
+  // Columns selector from Redux store
+  const columns = useSelector((state) => state.pagination.columns);
+  const enabledColumns = useSelector(
+    (state) => state.pagination.enabledColumns,
+  );
 
   /**
    * What to do if page was changed
@@ -98,9 +85,40 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
     return string.function.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
   };
 
-  const handleFilterByParent = (parentFn) => {
+  const handleFilterByParent = (parentFunction) => {
+    console.log(parentFunction);
     // Need filter original function
     // Then all child above
+  };
+
+  const handleTitle = (result, column) => {
+    switch (column.format) {
+      case 'bytes':
+        return result[column.name] + ' bytes';
+      case 'time':
+        return result[column.name] + ' microseconds';
+      case 'number':
+        return formatNumber(result[column.name]);
+      case 'percent':
+        return formatNumber(result[column.name], 2, '%');
+      default:
+        return result[column.name];
+    }
+  };
+
+  const handleText = (result, column) => {
+    switch (column.format) {
+      case 'bytes':
+        return formatBytes(result[column.name]);
+      case 'time':
+        return formatMicroseconds(result[column.name]);
+      case 'number':
+        return formatNumber(result[column.name]);
+      case 'percent':
+        return formatNumber(result[column.name], 2, '%');
+      default:
+        return result[column.name];
+    }
   };
 
   return (
@@ -111,12 +129,21 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
       >
         <TableHead>
           <TableRow>
-            {headers.map((header, index) => (
+            {columns.map((header, index) => (
               <TableCell
                 key={index}
                 style={{ width: header.width }}
                 className={classes.sticky}
-                align={header.name === 'function' ? `left` : `right`}
+                sx={{
+                  display: enabledColumns.includes(header.name)
+                    ? 'table-cell'
+                    : 'none',
+                }}
+                align={
+                  ['function', 'parent'].includes(header.name)
+                    ? `left`
+                    : `right`
+                }
               >
                 <TableSortLabel
                   active={sortBy === header.name}
@@ -141,52 +168,32 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
               .slice(page * itemsPerPage, (page + 1) * itemsPerPage)
               .map((result, index) => (
                 <TableRow key={index}>
-                  <TableCell
-                    className={classes.cell}
-                    onClick={() => handleFilterByParent(result.function ?? '')}
-                    title={result.function ?? ''}
-                  >
-                    {result.function ?? ''}
-                  </TableCell>
-                  <TableCell align={`right`}>
-                    {formatNumber(result.calls) ?? ''}
-                  </TableCell>
-                  <TableCell
-                    align={`right`}
-                    title={result.wtime + ' microseconds'}
-                  >
-                    {formatMicroseconds(result.wtime) ?? ''}
-                  </TableCell>
-                  <TableCell
-                    align={`right`}
-                    title={result.cpu + ' microseconds'}
-                  >
-                    {formatMicroseconds(result.cpu) ?? ''}
-                  </TableCell>
-                  <TableCell
-                    align={`right`}
-                    title={result.mem_usage + ' bytes'}
-                  >
-                    {formatBytes(result.mem_usage) ?? ''}
-                  </TableCell>
-                  <TableCell
-                    align={`right`}
-                    title={result.mem_usage_peek + ' bytes'}
-                  >
-                    {formatBytes(result.mem_usage_peek) ?? ''}
-                  </TableCell>
-                  <TableCell align={`right`}>
-                    {formatNumber(result.wtime_perc, 2) + '%' ?? ''}
-                  </TableCell>
-                  <TableCell align={`right`}>
-                    {formatNumber(result.cpu_perc, 2) + '%' ?? ''}
-                  </TableCell>
-                  <TableCell align={`right`}>
-                    {formatNumber(result.mem_usage_perc, 2) + '%' ?? ''}
-                  </TableCell>
-                  <TableCell align={`right`}>
-                    {formatNumber(result.mem_usage_peek_perc, 2) + '%' ?? ''}
-                  </TableCell>
+                  {/* TableCell */}
+                  {columns.map((column, cIndex) => {
+                    return (
+                      <TableCell
+                        key={index + '-cell-' + cIndex}
+                        className={classes.cell}
+                        align={
+                          ['function', 'parent'].includes(column.name)
+                            ? `left`
+                            : `right`
+                        }
+                        onClick={() =>
+                          handleFilterByParent(result.function ?? '')
+                        }
+                        title={handleTitle(result, column)}
+                        sx={{
+                          display: enabledColumns.includes(column.name)
+                            ? 'table-cell'
+                            : 'none',
+                        }}
+                      >
+                        {handleText(result, column)}
+                      </TableCell>
+                    );
+                  })}
+                  {/* TableCell END */}
                 </TableRow>
               ))}
         </TableBody>
