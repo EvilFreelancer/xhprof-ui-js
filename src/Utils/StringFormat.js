@@ -11,6 +11,13 @@ export const formatMicroseconds = (microseconds) => {
 
   let output = '';
   if (ss > 0) {
+    if (ms.toString().length === 1) {
+      ms = '00' + ms;
+    } else {
+      if (ms.toString().length === 2) {
+        ms = '0' + ms;
+      }
+    }
     output = ss + '.' + ms + ' s';
   } else {
     output = ms + ' ms';

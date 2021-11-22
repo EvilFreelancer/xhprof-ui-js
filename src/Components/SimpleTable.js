@@ -7,10 +7,11 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage } from '../Reducers/pagination';
+import { setPage, setFilterParentChild } from '../Reducers/pagination';
 import {
   formatMicroseconds,
   formatBytes,
@@ -47,6 +48,9 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
 
   // Pagination
   const filter = useSelector((state) => state.pagination.filter);
+  const filterParentChild = useSelector(
+    (state) => state.pagination.filterParentChild,
+  );
   const page = useSelector((state) => state.pagination.page);
   const [itemsPerPage, setItemsPerPage] = useState(100);
 
@@ -75,49 +79,73 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
       return true;
     }
 
-    // Select filtration mode
-    let filterMode = filter.split(':');
-    if (filterMode[0] === 'parent') {
-      console.log('parent');
+    let tmpFilter = filterParentChild.toLowerCase();
+    return (
+      string.function.toLowerCase().indexOf(tmpFilter) !== -1 ||
+      string.parent.toLowerCase().indexOf(tmpFilter) !== -1
+    );
+  };
+
+  /**
+   * Filter by parent or child
+   * @param string
+   * @return {boolean}
+   */
+  const filterStringParentChild = (string) => {
+    if (!filterParentChild) {
+      return true;
     }
 
-    // In any other cases filter by function name
-    return string.function.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+    let tmpFilter = filterParentChild.toLowerCase();
+    return (
+      string.function.toLowerCase().indexOf(tmpFilter) !== -1 ||
+      string.parent.toLowerCase().indexOf(tmpFilter) !== -1
+    );
   };
 
-  const handleFilterByParent = (parentFunction) => {
-    console.log(parentFunction);
-    // Need filter original function
-    // Then all child above
+  const handleFilterParentChild = (value) => {
+    dispatch(setFilterParentChild(value));
   };
 
-  const handleTitle = (result, column) => {
-    switch (column.format) {
+  /**
+   *
+   * @param value
+   * @param format
+   * @return {string|null|*}
+   */
+  const handleTitle = (value, format) => {
+    switch (format) {
       case 'bytes':
-        return result[column.name] + ' bytes';
+        return value + ' bytes';
       case 'time':
-        return result[column.name] + ' microseconds';
+        return value + ' microseconds';
       case 'number':
-        return formatNumber(result[column.name]);
+        return formatNumber(value);
       case 'percent':
-        return formatNumber(result[column.name], 2, '%');
+        return formatNumber(value, 3, '%');
       default:
-        return result[column.name];
+        return value;
     }
   };
 
-  const handleText = (result, column) => {
-    switch (column.format) {
+  /**
+   *
+   * @param value
+   * @param format
+   * @return {string|null|*}
+   */
+  const handleText = (value, format) => {
+    switch (format) {
       case 'bytes':
-        return formatBytes(result[column.name]);
+        return formatBytes(value);
       case 'time':
-        return formatMicroseconds(result[column.name]);
+        return formatMicroseconds(value);
       case 'number':
-        return formatNumber(result[column.name]);
+        return formatNumber(value);
       case 'percent':
-        return formatNumber(result[column.name], 2, '%');
+        return formatNumber(value, 2, '%');
       default:
-        return result[column.name];
+        return value;
     }
   };
 
@@ -125,7 +153,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
     <div>
       <Table
         fixedheader="false"
-        style={{ tableLayout: 'auto', marginBottom: '80px' }}
+        style={{ tableLayout: 'auto', marginBottom: '50px' }}
       >
         <TableHead>
           <TableRow>
@@ -150,10 +178,9 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                   direction={sortDirection}
                   onClick={() => handleSort(header.name)}
                 >
-                  <div>
-                    <div>{header.label}</div>
-                    <div>{header.sub && <small>{header.sub}</small>}</div>
-                  </div>
+                  <Typography variant="h8" component="span">
+                    {header.label}
+                  </Typography>
                 </TableSortLabel>
               </TableCell>
             ))}
@@ -163,7 +190,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
           {results.length > 0 &&
             results
               .filter((string) => {
-                return filterString(string);
+                return filterString(string) && filterStringParentChild(string);
               })
               .slice(page * itemsPerPage, (page + 1) * itemsPerPage)
               .map((result, index) => (
@@ -179,17 +206,22 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                             ? `left`
                             : `right`
                         }
-                        onClick={() =>
-                          handleFilterByParent(result.function ?? '')
-                        }
-                        title={handleTitle(result, column)}
+                        onClick={() => {
+                          if ('function' === column.name) {
+                            handleFilterParentChild(result.function);
+                          }
+                          if ('parent' === column.name) {
+                            handleFilterParentChild(result.parent);
+                          }
+                        }}
+                        title={handleTitle(result[column.name], column.format)}
                         sx={{
                           display: enabledColumns.includes(column.name)
                             ? 'table-cell'
                             : 'none',
                         }}
                       >
-                        {handleText(result, column)}
+                        {handleText(result[column.name], column.format)}
                       </TableCell>
                     );
                   })}

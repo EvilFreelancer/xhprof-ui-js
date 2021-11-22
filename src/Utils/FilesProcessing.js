@@ -36,28 +36,31 @@ export const parseJson = (json) => {
 
     // Build object to push
     let item = {
-      function: parentChild[1] ?? parentChild[0],
       parent: parentChild[0],
-      child: parentChild[1],
+      function: parentChild[1] ?? parentChild[0],
       calls: entry[1]['ct'],
       wtime: entry[1]['wt'],
       wtime_perc: (entry[1]['wt'] / main.wt) * 100,
     };
 
+    if (item.parent === 'main()' && item.function === 'main()') {
+      item.parent = '';
+    }
+
     // XHPROF_FLAGS_CPU
     if ('cpu' in main) {
       item.cpu = entry[1]['cpu'];
-      item.cpu_perc = (entry[1]['cpu'] / main.cpu) * 100;
+      item.cpu_perc = (item.cpu / main.cpu) * 100;
     }
 
     // XHPROF_FLAGS_MEMORY
     if ('mu' in main) {
       item.mem_usage = entry[1]['mu'];
-      item.mem_usage_perc = (entry[1]['mu'] / main.mu) * 100;
+      item.mem_usage_perc = (item.mem_usage / main.mu) * 100;
     }
     if ('pmu' in main) {
       item.mem_usage_peek = entry[1]['pmu'];
-      item.mem_usage_peek_perc = (entry[1]['pmu'] / main.pmu) * 100;
+      item.mem_usage_peek_perc = (item.mem_usage_peek / main.pmu) * 100;
     }
 
     // Append object to array

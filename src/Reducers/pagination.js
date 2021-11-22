@@ -4,6 +4,7 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState: {
     filter: null,
+    filterParentChild: null,
     page: 0,
     columns: [
       { name: 'parent', label: 'Parent', width: '22.5%' },
@@ -38,13 +39,19 @@ export const filterSlice = createSlice({
         description: 'bytes',
       },
       {
+        name: 'calls_perc',
+        label: 'Calls%',
+        width: '5%',
+        format: 'percent',
+      },
+      {
         name: 'wtime_perc',
         label: 'IWall%',
         width: '5%',
         format: 'percent',
       },
       {
-        name: 'cpu_pecr',
+        name: 'cpu_perc',
         label: 'ICpu%',
         width: '5%',
         format: 'percent',
@@ -63,15 +70,16 @@ export const filterSlice = createSlice({
       },
     ],
     enabledColumns: [
-      // 'parent',
+      'parent',
       'function',
       'calls',
       'wtime',
       'cpu',
       'mem_usage',
       'mem_usage_peek',
+      // 'calls_perc',
       // 'wtime_perc',
-      // 'cpu_pecr',
+      // 'cpu_perc',
       // 'mem_usage_perc',
       // 'mem_usage_peek_perc',
     ],
@@ -80,6 +88,9 @@ export const filterSlice = createSlice({
     setFilter: (state, action) => {
       state.filter = action.payload;
       state.page = 0;
+    },
+    setFilterParentChild: (state, action) => {
+      state.filterParentChild = action.payload;
     },
     setPage: (state, action) => {
       state.page = parseInt(action.payload);
@@ -91,6 +102,7 @@ export const filterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setFilter, setPage, setEnabledColumns } = filterSlice.actions;
+export const { setFilter, setPage, setEnabledColumns, setFilterParentChild } =
+  filterSlice.actions;
 
 export default filterSlice.reducer;

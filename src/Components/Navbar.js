@@ -1,14 +1,18 @@
 import React from 'react';
-import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material';
+import { AppBar, Chip, CssBaseline, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from './Search';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from '../Reducers/pagination';
+import { setFilter, setFilterParentChild } from '../Reducers/pagination';
 import ColumnsButtonAndModal from './Modals/ColumnsButtonAndModal';
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.files.selected);
+  const filter = useSelector((state) => state.pagination.filter);
+  const filterParentChild = useSelector(
+    (state) => state.pagination.filterParentChild,
+  );
 
   /**
    * Filter values dynamicaly
@@ -16,6 +20,13 @@ export default function Navbar() {
    */
   const handleFilter = (event) => {
     dispatch(setFilter(event.target.value));
+  };
+
+  /**
+   * Cleanup filter
+   */
+  const handleDeleteFilterParentChild = () => {
+    dispatch(setFilterParentChild(null));
   };
 
   return (
@@ -40,15 +51,26 @@ export default function Navbar() {
         >
           Xhprof-UI.js
         </Typography>
+        {!!filterParentChild && (
+          <Typography>
+            <Chip
+              label={filterParentChild}
+              // variant="outlined"
+              color="info"
+              onDelete={handleDeleteFilterParentChild}
+            />
+          </Typography>
+        )}
         {!!selected.json && (
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search..."
               inputProps={{ 'aria-label': 'search' }}
               onChange={(e) => handleFilter(e)}
+              value={filter}
             />
           </Search>
         )}
