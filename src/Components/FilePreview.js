@@ -84,21 +84,27 @@ export function FilePreview() {
                     microsecs
                   </ListItemText>
                 </ListItem>
-                <ListItem>
-                  <ListItemText>
-                    Total Incl. CPU (microsecs): {selected.main.cpu} microsecs
-                  </ListItemText>
-                </ListItem>
-                <ListItem>
-                  <ListItemText>
-                    Total Incl. MemUse (bytes): {selected.main.mu} bytes
-                  </ListItemText>
-                </ListItem>
-                <ListItem>
-                  <ListItemText>
-                    Total Incl. PeakMemUse (bytes): {selected.main.pmu} bytes
-                  </ListItemText>
-                </ListItem>
+                {selected.main.cpu && (
+                  <ListItem>
+                    <ListItemText>
+                      Total Incl. CPU (microsecs): {selected.main.cpu} microsecs
+                    </ListItemText>
+                  </ListItem>
+                )}
+                {selected.main.mu && (
+                  <ListItem>
+                    <ListItemText>
+                      Total Incl. MemUse (bytes): {selected.main.mu} bytes
+                    </ListItemText>
+                  </ListItem>
+                )}
+                {selected.main.pmu && (
+                  <ListItem>
+                    <ListItemText>
+                      Total Incl. PeakMemUse (bytes): {selected.main.pmu} bytes
+                    </ListItemText>
+                  </ListItem>
+                )}
                 <ListItem>
                   <ListItemText>
                     Number of Function Calls: {selected.callsTotal}
