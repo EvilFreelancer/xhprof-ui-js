@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage, setFilterParentChild, setItemsPerPage } from '../Reducers/pagination';
+import { setPage, setFilterParentChild, setItemsPerPage, setSortDirection, setSortBy } from '../Reducers/pagination';
 import { formatMicroseconds, formatBytes, formatNumber } from '../Utils/StringFormat';
 
 // Custom styles
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
+export function SimpleTable({ results }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -58,6 +58,32 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
   // Columns selector from Redux store
   const columns = useSelector((state) => state.pagination.columns);
   const enabledColumns = useSelector((state) => state.pagination.enabledColumns);
+
+  // Sort by wtime by default, in descent order
+  const sortBy = useSelector((state) => state.pagination.sortBy);
+  const sortDirection = useSelector((state) => state.pagination.sortDirection);
+
+  /**
+   * Switch sort order if column or order was changed
+   * @param columnName
+   */
+  const handleSort = (columnName) => {
+    if (columnName === sortBy) {
+      // If name of column not changed, then reverse order
+      dispatch(setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc'));
+    } else {
+      // If changed then need to do everything from begin
+      dispatch(setSortBy(columnName));
+
+      if (columnName === 'function') {
+        // Initial state of names of function is ascend
+        dispatch(setSortDirection('asc'));
+      } else {
+        // All other columns should be sorted in descent order
+        dispatch(setSortDirection('desc'));
+      }
+    }
+  };
 
   /**
    * What to do if page was changed
@@ -223,12 +249,12 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
         rowsPerPage={itemsPerPage}
         rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]}
         onRowsPerPageChange={(element) => {
-          setItemsPerPage(element.target.value);
+          dispatch(setItemsPerPage(element.target.value));
         }}
         className={classes.fab}
         count={
           results.filter((string) => {
-            return filterString(string);
+            return filterString(string) && filterStringParentChild(string);
           }).length
         }
         page={page}

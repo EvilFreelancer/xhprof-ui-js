@@ -3,10 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 export const filterSlice = createSlice({
   name: 'filter',
   initialState: {
-    filter: null,
-    filterParentChild: null,
+    filter: '',
+    filterParentChild: '',
     page: 0,
     itemsPerPage: 100,
+    sortDirection: 'desc',
+    sortBy: 'wtime',
     columns: [
       { name: 'parent', label: 'Parent', width: '22.5%' },
       { name: 'function', label: 'Function', width: '22.5%' },
@@ -102,10 +104,24 @@ export const filterSlice = createSlice({
     setItemsPerPage: (state, action) => {
       state.itemsPerPage = parseInt(action.payload);
     },
+    setSortDirection: (state, action) => {
+      state.sortDirection = action.payload;
+    },
+    setSortBy: (state, action) => {
+      state.sortBy = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setFilter, setPage, setEnabledColumns, setFilterParentChild, setItemsPerPage } = filterSlice.actions;
+export const {
+  setFilter,
+  setPage,
+  setEnabledColumns,
+  setFilterParentChild,
+  setItemsPerPage,
+  setSortDirection,
+  setSortBy,
+} = filterSlice.actions;
 
 export default filterSlice.reducer;
