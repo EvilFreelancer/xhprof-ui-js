@@ -26,13 +26,10 @@ module.exports = {
     'plugin:prettier/recommended', // Make this the last element so prettier config overrides other formatting rules
   ],
   rules: {
+    'max-len': 0,
     'no-unused-vars': 0,
     'jsx-a11y/no-autofocus': 'off',
     'react/prop-types': 'off',
-    'prettier/prettier': [
-      'error',
-      { endOfLine: 'auto' },
-      { usePrettierrc: true },
-    ], // Use our .prettierrc file as source
+    'prettier/prettier': ['off', { endOfLine: 'auto' }, { usePrettierrc: true }], // Use our .prettierrc file as source
   },
 };

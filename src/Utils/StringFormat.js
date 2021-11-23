@@ -9,7 +9,7 @@ export const formatMicroseconds = (microseconds) => {
   let ms = time.getMilliseconds();
   let ss = time.getSeconds();
 
-  let output = '';
+  let output;
   if (ss > 0) {
     if (ms.toString().length === 1) {
       ms = '00' + ms;
@@ -75,10 +75,7 @@ export const formatBytes = (bytes = null, isThousand = false, afterDot = 2) => {
   do {
     bytes /= thresh;
     ++u;
-  } while (
-    Math.round(Math.abs(bytes) * r) / r >= thresh &&
-    u < units.length - 1
-  );
+  } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
 
   return bytes.toFixed(afterDot) + ' ' + units[u];
 };

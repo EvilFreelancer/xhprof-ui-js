@@ -6,6 +6,7 @@ export const filterSlice = createSlice({
     filter: null,
     filterParentChild: null,
     page: 0,
+    itemsPerPage: 100,
     columns: [
       { name: 'parent', label: 'Parent', width: '22.5%' },
       { name: 'function', label: 'Function', width: '22.5%' },
@@ -98,11 +99,13 @@ export const filterSlice = createSlice({
     setEnabledColumns: (state, action) => {
       state.enabledColumns = action.payload;
     },
+    setItemsPerPage: (state, action) => {
+      state.itemsPerPage = parseInt(action.payload);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setFilter, setPage, setEnabledColumns, setFilterParentChild } =
-  filterSlice.actions;
+export const { setFilter, setPage, setEnabledColumns, setFilterParentChild, setItemsPerPage } = filterSlice.actions;
 
 export default filterSlice.reducer;

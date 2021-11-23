@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SimpleTable } from './SimpleTable';
 import orderBy from 'lodash/orderBy';
-import {
-  Box,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import { Box, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 export function FilePreview() {
@@ -46,11 +39,7 @@ export function FilePreview() {
 
   const handleCalculation = () => {
     // When result is ready for render, then order by wtime in desc order
-    let items = orderBy(
-      selected.result,
-      ['wtime', 'function'],
-      ['desc', 'asc'],
-    );
+    let items = orderBy(selected.result, ['wtime', 'function'], ['desc', 'asc']);
     setResults(items);
   };
 
@@ -68,9 +57,7 @@ export function FilePreview() {
         <Grid item xs={6}>
           <Box>
             {selected.main && (
-              <List
-                sx={{ backgroundColor: (theme) => theme.palette.grey[100] }}
-              >
+              <List sx={{ backgroundColor: (theme) => theme.palette.grey[100] }}>
                 <ListItem>
                   <ListItemText>
                     <Typography variant="h6" component="h2">
@@ -79,36 +66,25 @@ export function FilePreview() {
                   </ListItemText>
                 </ListItem>
                 <ListItem>
-                  <ListItemText>
-                    Total Incl. Wall Time (microsec): {selected.main.wt}{' '}
-                    microsecs
-                  </ListItemText>
+                  <ListItemText>Total Incl. Wall Time (microsec): {selected.main.wt} microsecs</ListItemText>
                 </ListItem>
                 {selected.main.cpu && (
                   <ListItem>
-                    <ListItemText>
-                      Total Incl. CPU (microsecs): {selected.main.cpu} microsecs
-                    </ListItemText>
+                    <ListItemText>Total Incl. CPU (microsecs): {selected.main.cpu} microsecs</ListItemText>
                   </ListItem>
                 )}
                 {selected.main.mu && (
                   <ListItem>
-                    <ListItemText>
-                      Total Incl. MemUse (bytes): {selected.main.mu} bytes
-                    </ListItemText>
+                    <ListItemText>Total Incl. MemUse (bytes): {selected.main.mu} bytes</ListItemText>
                   </ListItem>
                 )}
                 {selected.main.pmu && (
                   <ListItem>
-                    <ListItemText>
-                      Total Incl. PeakMemUse (bytes): {selected.main.pmu} bytes
-                    </ListItemText>
+                    <ListItemText>Total Incl. PeakMemUse (bytes): {selected.main.pmu} bytes</ListItemText>
                   </ListItem>
                 )}
                 <ListItem>
-                  <ListItemText>
-                    Number of Function Calls: {selected.callsTotal}
-                  </ListItemText>
+                  <ListItemText>Number of Function Calls: {selected.callsTotal}</ListItemText>
                 </ListItem>
               </List>
             )}

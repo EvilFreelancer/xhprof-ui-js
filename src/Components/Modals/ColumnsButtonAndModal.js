@@ -3,15 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import {
-  IconButton,
-  ListItem,
-  List,
-  ListItemText,
-  Checkbox,
-  ListItemIcon,
-  ListItemButton,
-} from '@mui/material';
+import { IconButton, ListItem, List, ListItemText, Checkbox, ListItemIcon, ListItemButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { filter, clone } from 'lodash';
 import { setEnabledColumns } from '../../Reducers/pagination';
@@ -34,9 +26,7 @@ export default function ColumnsButtonAndModal() {
 
   // Columns selector from Redux store
   const columns = useSelector((state) => state.pagination.columns);
-  const enabledColumns = useSelector(
-    (state) => state.pagination.enabledColumns,
-  );
+  const enabledColumns = useSelector((state) => state.pagination.enabledColumns);
 
   /**
    * Update list of enabled columns
@@ -59,13 +49,7 @@ export default function ColumnsButtonAndModal() {
 
   return (
     <div>
-      <IconButton
-        size="large"
-        edge="end"
-        color="inherit"
-        aria-label="enabledColumns"
-        onClick={handleOpen}
-      >
+      <IconButton size="large" edge="end" color="inherit" aria-label="enabledColumns" onClick={handleOpen}>
         <ViewWeekIcon />
       </IconButton>
       <Modal open={open} onClose={handleClose}>
@@ -86,11 +70,7 @@ export default function ColumnsButtonAndModal() {
 
               return (
                 <ListItem key={`column-` + index}>
-                  <ListItemButton
-                    role={undefined}
-                    onClick={() => handleToggle(column.name)}
-                    dense
-                  >
+                  <ListItemButton role={undefined} onClick={() => handleToggle(column.name)} dense>
                     <ListItemIcon>
                       <Checkbox
                         edge="start"

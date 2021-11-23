@@ -10,9 +10,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const selected = useSelector((state) => state.files.selected);
   const filter = useSelector((state) => state.pagination.filter);
-  const filterParentChild = useSelector(
-    (state) => state.pagination.filterParentChild,
-  );
+  const filterParentChild = useSelector((state) => state.pagination.filterParentChild);
 
   /**
    * Filter values dynamicaly
@@ -30,10 +28,7 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-    >
+    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <CssBaseline />
       <Toolbar
         disableGutters
@@ -43,12 +38,7 @@ export default function Navbar() {
           px: 3,
         }}
       >
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-        >
+        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
           Xhprof-UI.js
         </Typography>
         {!!filterParentChild && (

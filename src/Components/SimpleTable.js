@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -11,16 +11,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage, setFilterParentChild } from '../Reducers/pagination';
-import {
-  formatMicroseconds,
-  formatBytes,
-  formatNumber,
-} from '../Utils/StringFormat';
-import { createTheme } from '@material-ui/core/styles';
+import { setPage, setFilterParentChild, setItemsPerPage } from '../Reducers/pagination';
+import { formatMicroseconds, formatBytes, formatNumber } from '../Utils/StringFormat';
 
 // Custom styles
-const theme = createTheme();
 const useStyles = makeStyles({
   cell: {
     whiteSpace: 'nowrap',
@@ -57,17 +51,13 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
 
   // Pagination
   const filter = useSelector((state) => state.pagination.filter);
-  const filterParentChild = useSelector(
-    (state) => state.pagination.filterParentChild,
-  );
+  const filterParentChild = useSelector((state) => state.pagination.filterParentChild);
   const page = useSelector((state) => state.pagination.page);
-  const [itemsPerPage, setItemsPerPage] = useState(100);
+  const itemsPerPage = useSelector((state) => state.pagination.itemsPerPage);
 
   // Columns selector from Redux store
   const columns = useSelector((state) => state.pagination.columns);
-  const enabledColumns = useSelector(
-    (state) => state.pagination.enabledColumns,
-  );
+  const enabledColumns = useSelector((state) => state.pagination.enabledColumns);
 
   /**
    * What to do if page was changed
@@ -90,8 +80,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
 
     let tmpFilter = filter.toLowerCase();
     return (
-      string.function.toLowerCase().indexOf(tmpFilter) !== -1 ||
-      string.parent.toLowerCase().indexOf(tmpFilter) !== -1
+      string.function.toLowerCase().indexOf(tmpFilter) !== -1 || string.parent.toLowerCase().indexOf(tmpFilter) !== -1
     );
   };
 
@@ -107,8 +96,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
 
     let tmpFilter = filterParentChild.toLowerCase();
     return (
-      string.function.toLowerCase().indexOf(tmpFilter) !== -1 ||
-      string.parent.toLowerCase().indexOf(tmpFilter) !== -1
+      string.function.toLowerCase().indexOf(tmpFilter) !== -1 || string.parent.toLowerCase().indexOf(tmpFilter) !== -1
     );
   };
 
@@ -160,10 +148,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
 
   return (
     <div>
-      <Table
-        fixedheader="false"
-        style={{ tableLayout: 'auto', marginBottom: '50px' }}
-      >
+      <Table fixedheader="false" style={{ tableLayout: 'auto', marginBottom: '50px' }}>
         <TableHead>
           <TableRow>
             {columns.map((header, index) => (
@@ -172,15 +157,9 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                 style={{ width: header.width }}
                 className={classes.sticky}
                 sx={{
-                  display: enabledColumns.includes(header.name)
-                    ? 'table-cell'
-                    : 'none',
+                  display: enabledColumns.includes(header.name) ? 'table-cell' : 'none',
                 }}
-                align={
-                  ['function', 'parent'].includes(header.name)
-                    ? `left`
-                    : `right`
-                }
+                align={['function', 'parent'].includes(header.name) ? `left` : `right`}
               >
                 <TableSortLabel
                   active={sortBy === header.name}
@@ -210,16 +189,10 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                       <TableCell
                         key={index + '-cell-' + cIndex}
                         className={classes.cell}
-                        align={
-                          ['function', 'parent'].includes(column.name)
-                            ? `left`
-                            : `right`
-                        }
+                        align={['function', 'parent'].includes(column.name) ? `left` : `right`}
                         title={handleTitle(result[column.name], column.format)}
                         sx={{
-                          display: enabledColumns.includes(column.name)
-                            ? 'table-cell'
-                            : 'none',
+                          display: enabledColumns.includes(column.name) ? 'table-cell' : 'none',
                         }}
                       >
                         <Typography
@@ -232,11 +205,7 @@ export function SimpleTable({ results, sortBy, sortDirection, handleSort }) {
                               handleFilterParentChild(result.parent);
                             }
                           }}
-                          className={
-                            ['function', 'parent'].includes(column.name)
-                              ? classes.clickable
-                              : ''
-                          }
+                          className={['function', 'parent'].includes(column.name) ? classes.clickable : ''}
                         >
                           {handleText(result[column.name], column.format)}
                         </Typography>
