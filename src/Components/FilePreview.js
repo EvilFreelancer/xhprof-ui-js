@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { SimpleTable } from './SimpleTable';
 import orderBy from 'lodash/orderBy';
 import { Box, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSortDirection, sortBy } from '../Reducers/pagination';
+import { useSelector } from 'react-redux';
 
 export function FilePreview() {
-  const dispatch = useDispatch();
-
   const [results, setResults] = useState([]);
   const [currentSelected, setCurrentSelected] = useState({});
 
