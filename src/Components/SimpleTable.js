@@ -75,7 +75,7 @@ export function SimpleTable({ results }) {
       // If changed then need to do everything from begin
       dispatch(setSortBy(columnName));
 
-      if (columnName === 'function') {
+      if (['function', 'parent'].includes(columnName)) {
         // Initial state of names of function is ascend
         dispatch(setSortDirection('asc'));
       } else {
