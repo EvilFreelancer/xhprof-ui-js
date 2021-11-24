@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getItemFromStorage, getArrayFromStorage, saveItemToStorage, saveArrayToStorage } from '../Utils/LocalStorage';
 
 export const filterSlice = createSlice({
   name: 'filter',
@@ -6,9 +7,9 @@ export const filterSlice = createSlice({
     filter: '',
     filterParentChild: '',
     page: 0,
-    itemsPerPage: 100,
-    sortDirection: 'desc',
-    sortBy: 'wtime',
+    itemsPerPage: getItemFromStorage('itemsPerPage', 100),
+    sortDirection: getItemFromStorage('sortDirection', 'desc'),
+    sortBy: getItemFromStorage('sortBy', 'wtime'),
     columns: [
       { name: 'parent', label: 'Parent', width: '22.5%' },
       { name: 'function', label: 'Function', width: '22.5%' },
@@ -72,7 +73,7 @@ export const filterSlice = createSlice({
         format: 'percent',
       },
     ],
-    enabledColumns: [
+    enabledColumns: getArrayFromStorage('enabledColumns', [
       'parent',
       'function',
       'calls',
@@ -85,7 +86,7 @@ export const filterSlice = createSlice({
       // 'cpu_perc',
       // 'mem_usage_perc',
       // 'mem_usage_peek_perc',
-    ],
+    ]),
   },
   reducers: {
     setFilter: (state, action) => {
@@ -100,15 +101,19 @@ export const filterSlice = createSlice({
     },
     setEnabledColumns: (state, action) => {
       state.enabledColumns = action.payload;
+      saveArrayToStorage('enabledColumns', action.payload);
     },
     setItemsPerPage: (state, action) => {
       state.itemsPerPage = parseInt(action.payload);
+      saveItemToStorage('itemsPerPage', parseInt(action.payload));
     },
     setSortDirection: (state, action) => {
       state.sortDirection = action.payload;
+      saveItemToStorage('sortDirection', action.payload);
     },
     setSortBy: (state, action) => {
       state.sortBy = action.payload;
+      saveItemToStorage('sortBy', action.payload);
     },
   },
 });

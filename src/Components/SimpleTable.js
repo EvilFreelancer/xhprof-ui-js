@@ -246,7 +246,7 @@ export function SimpleTable({ results }) {
       <TablePagination
         sx={{ boxShadow: 4 }}
         justifycontent="center"
-        rowsPerPage={itemsPerPage}
+        rowsPerPage={parseInt(itemsPerPage)}
         rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]}
         onRowsPerPageChange={(element) => {
           dispatch(setItemsPerPage(element.target.value));
@@ -257,7 +257,7 @@ export function SimpleTable({ results }) {
             return filterString(string) && filterStringParentChild(string);
           }).length
         }
-        page={page}
+        page={parseInt(page)}
         onPageChange={onPageChange}
         color="standard"
         size="medium"
