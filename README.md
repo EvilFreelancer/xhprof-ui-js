@@ -1,8 +1,13 @@
-# XHProf UI JS
+# XHProf-UI.js
 
 Modern and flexible UI for viewing XHProf dumps.
 
 ![Main Window](./images/main-window.jpg)
+
+This application created using following technologies:
+* [React](https://reactjs.org/)
+* [Redux](https://redux.js.org/)
+* [Material UI](https://mui.com/)
 
 ## How to use
 
