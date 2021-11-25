@@ -52,7 +52,13 @@ export default function Navbar() {
           </Typography>
         )}
         {!!selected.json && (
-          <Search>
+          <Search
+            sx={{
+              display: {
+                xs: 'none',
+              },
+            }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

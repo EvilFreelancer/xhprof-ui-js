@@ -20,11 +20,11 @@ export default function Dashboard() {
   });
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: { sm: 'flex' } }}>
       <CssBaseline />
       <Navbar />
       <LeftMenu />
-      <Box sx={{ flexGrow: 1, p: 3 }}>{showPreview && <FilePreview />}</Box>
+      <Box sx={{ flexGrow: 1, p: { sm: 3 }, pt: { xs: 5 } }}>{showPreview && <FilePreview />}</Box>
       {!useMediaQuery('(min-width:600px)') && <SwipeableEdgeDrawer />}
     </Box>
   );

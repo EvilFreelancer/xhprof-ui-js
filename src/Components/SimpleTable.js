@@ -13,6 +13,7 @@ import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPage, setFilterParentChild, setItemsPerPage, setSortDirection, setSortBy } from '../Reducers/pagination';
 import { formatMicroseconds, formatBytes, formatNumber } from '../Utils/StringFormat';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Custom styles
 const useStyles = makeStyles({
@@ -208,7 +209,7 @@ export function SimpleTable({ results }) {
               })
               .slice(page * itemsPerPage, (page + 1) * itemsPerPage)
               .map((result, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} style={{ backgroundColor: 'white' }}>
                   {/* TableCell */}
                   {columns.map((column, cIndex) => {
                     return (
@@ -261,8 +262,8 @@ export function SimpleTable({ results }) {
         onPageChange={onPageChange}
         color="standard"
         size="medium"
-        showFirstButton
-        showLastButton
+        showFirstButton={useMediaQuery('(min-width:600px)')}
+        showLastButton={useMediaQuery('(min-width:600px)')}
       />
     </div>
   );

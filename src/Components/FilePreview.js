@@ -3,6 +3,7 @@ import { SimpleTable } from './SimpleTable';
 import orderBy from 'lodash/orderBy';
 import { Box, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { Overall } from './Overall';
 
 export function FilePreview() {
   const [results, setResults] = useState([]);
@@ -27,45 +28,18 @@ export function FilePreview() {
 
   return (
     <div>
-      <Grid mt={5}>
-        <Grid item xs={6}>
+      <Grid sx={{ mt: { xs: 4, sm: 6 } }}>
+        <Grid item xs={12} sm={6} md={5} mb={1}>
           <Box>
-            {selected.main && (
-              <List sx={{ backgroundColor: (theme) => theme.palette.grey[100] }}>
-                <ListItem>
-                  <ListItemText>
-                    <Typography variant="h6" component="h2">
-                      Overall Summary
-                    </Typography>
-                  </ListItemText>
-                </ListItem>
-                <ListItem>
-                  <ListItemText>Total Incl. Wall Time (microsec): {selected.main.wt} microsecs</ListItemText>
-                </ListItem>
-                {selected.main.cpu && (
-                  <ListItem>
-                    <ListItemText>Total Incl. CPU (microsecs): {selected.main.cpu} microsecs</ListItemText>
-                  </ListItem>
-                )}
-                {selected.main.mu && (
-                  <ListItem>
-                    <ListItemText>Total Incl. MemUse (bytes): {selected.main.mu} bytes</ListItemText>
-                  </ListItem>
-                )}
-                {selected.main.pmu && (
-                  <ListItem>
-                    <ListItemText>Total Incl. PeakMemUse (bytes): {selected.main.pmu} bytes</ListItemText>
-                  </ListItem>
-                )}
-                <ListItem>
-                  <ListItemText>Number of Function Calls: {selected.callsTotal}</ListItemText>
-                </ListItem>
-              </List>
-            )}
+            <Overall />
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <Box>
+            <SimpleTable results={orderBy(results, [sortBy, 'function'], [sortDirection, 'asc'])} />
           </Box>
         </Grid>
       </Grid>
-      <SimpleTable results={orderBy(results, [sortBy, 'function'], [sortDirection, 'asc'])} />
     </div>
   );
 }

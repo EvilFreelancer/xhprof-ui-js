@@ -9,6 +9,9 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedFile } from '../Reducers/files';
+import { MyDropzone } from './MyDropzone';
 
 const drawerBleeding = 56;
 
@@ -42,6 +45,19 @@ function SwipeableEdgeDrawer(props) {
   // This is used only for the example
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  // Redux
+  const dispatch = useDispatch();
+  const files = useSelector((state) => state.files.files);
+  const selected = useSelector((state) => state.files.selected);
+
+  const handleFileOpen = (e, fileId) => {
+    if (selected.id === fileId) {
+      dispatch(setSelectedFile(null));
+    } else {
+      dispatch(setSelectedFile(fileId));
+    }
+  };
+
   return (
     <Root>
       <CssBaseline />
@@ -53,9 +69,6 @@ function SwipeableEdgeDrawer(props) {
           },
         }}
       />
-      <Box sx={{ textAlign: 'center', pt: 1 }}>
-        <Button onClick={toggleDrawer(true)}>Open</Button>
-      </Box>
       <SwipeableDrawer
         container={container}
         anchor="bottom"
@@ -80,17 +93,10 @@ function SwipeableEdgeDrawer(props) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>51 results</Typography>
+          <Typography sx={{ p: 2, color: 'text.secondary' }}>{selected.name ?? 'Choose XHProf report'}</Typography>
         </StyledBox>
-        <StyledBox
-          sx={{
-            px: 2,
-            pb: 2,
-            height: '100%',
-            overflow: 'auto',
-          }}
-        >
-          <Skeleton variant="rectangular" height="100%" />
+        <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }}>
+          <MyDropzone dropzoneText={'Click to upload files'} />
         </StyledBox>
       </SwipeableDrawer>
     </Root>

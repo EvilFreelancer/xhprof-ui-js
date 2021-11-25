@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneAreaBase } from 'material-ui-dropzone';
 import { makeStyles } from '@mui/styles';
 import { addFile } from '../Reducers/files';
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
  * @returns {JSX.Element}
  * @constructor
  */
-export function MyDropzone() {
+export function MyDropzone({ dropzoneText = 'Drag and drop a files here or click' }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -39,12 +39,14 @@ export function MyDropzone() {
 
   return (
     <div>
-      <DropzoneArea
+      <DropzoneAreaBase
+        dropzoneText={dropzoneText}
         dropzoneClass={classes.dropzoneArea}
         onDrop={onDrop}
         filesLimit={100}
         showPreviewsInDropzone={false}
         showAlerts={false}
+        fileObjects
       />
     </div>
   );
