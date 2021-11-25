@@ -3,7 +3,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import { IconButton, ListItem, List, ListItemText, Checkbox, ListItemIcon, ListItemButton } from '@mui/material';
+import {
+  IconButton,
+  ListItem,
+  List,
+  ListItemText,
+  Checkbox,
+  ListItemIcon,
+  ListItemButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  FormGroup,
+  FormControlLabel,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { filter, clone } from 'lodash';
 import { setEnabledColumns } from '../../Reducers/pagination';
@@ -58,56 +71,54 @@ export default function ColumnsButtonAndModal() {
       <IconButton size="large" edge="end" color="inherit" aria-label="enabledColumns" onClick={handleOpen}>
         <ViewWeekIcon />
       </IconButton>
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            // component="h2"
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 700 } }}
+        maxWidth="xs"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Select enabled columns
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
             paddingLeft={4}
             paddingRight={4}
             paddingTop={2}
-            component="div"
-            sx={{ flexGrow: 1 }}
+            sx={{
+              position: 'absolute',
+              right: {
+                xs: 23,
+                sm: 13,
+              },
+              top: 13,
+              color: (theme) => theme.palette.grey[500],
+            }}
           >
-            Select enabled columns
-            <IconButton
-              aria-label="close"
-              onClick={handleClose}
-              sx={{
-                position: 'absolute',
-                right: 13,
-                top: 13,
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Typography>
-          <List>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <FormGroup>
             {columns.map((column, index) => {
-              const labelId = `checkbox-list-label-${column.name}`;
-
               return (
-                <ListItem key={`column-` + index}>
-                  <ListItemButton role={undefined} onClick={() => handleToggle(column.name)} dense>
-                    <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        checked={enabledColumns.includes(column.name)}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ 'aria-labelledby': labelId }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText id={labelId} primary={column.label} />
-                  </ListItemButton>
-                </ListItem>
+                <FormControlLabel
+                  key={`column-` + index}
+                  control={
+                    <Checkbox
+                      checked={enabledColumns.includes(column.name)}
+                      onChange={() => handleToggle(column.name)}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                      sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+                    />
+                  }
+                  label={column.label}
+                />
               );
             })}
-          </List>
-        </Box>
-      </Modal>
+          </FormGroup>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
