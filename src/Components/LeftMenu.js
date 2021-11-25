@@ -43,6 +43,7 @@ export default function LeftMenu() {
         width: drawerWidth,
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        display: { xs: 'none', sm: 'block' },
       }}
     >
       <Toolbar />

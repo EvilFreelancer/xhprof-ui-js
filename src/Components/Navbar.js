@@ -38,7 +38,7 @@ export default function Navbar() {
           px: 3,
         }}
       >
-        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
+        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
           Xhprof-UI.js
         </Typography>
         {!!filterParentChild && (

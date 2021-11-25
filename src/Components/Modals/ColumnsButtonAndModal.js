@@ -7,6 +7,7 @@ import { IconButton, ListItem, List, ListItemText, Checkbox, ListItemIcon, ListI
 import { useDispatch, useSelector } from 'react-redux';
 import { filter, clone } from 'lodash';
 import { setEnabledColumns } from '../../Reducers/pagination';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
@@ -14,8 +15,13 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
+  height: {
+    xs: '100%',
+    sm: 'auto',
+  },
   bgcolor: 'background.paper',
   boxShadow: 24,
+  overflow: 'auto',
 };
 
 export default function ColumnsButtonAndModal() {
@@ -57,12 +63,26 @@ export default function ColumnsButtonAndModal() {
           <Typography
             id="modal-modal-title"
             variant="h6"
-            component="h2"
-            paddingLeft={2}
-            paddingRight={2}
+            // component="h2"
+            paddingLeft={4}
+            paddingRight={4}
             paddingTop={2}
+            component="div"
+            sx={{ flexGrow: 1 }}
           >
             Select enabled columns
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 13,
+                top: 13,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
           </Typography>
           <List>
             {columns.map((column, index) => {
