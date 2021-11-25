@@ -31,7 +31,7 @@ export const filesSlice = createSlice({
         callsTotal: parsedJson.callsTotal,
         main: action.payload.json['main()'],
       };
-      state.files[state.sequence] = payload;
+      state.files.push(payload);
       state.sequence += 1;
 
       // Select first file
