@@ -1,6 +1,6 @@
 # XHProf-UI.js
 
-Modern and flexible UI for viewing XHProf dumps.
+Modern and flexible UI for viewing [XHProf](https://github.com/longxinH/xhprof) dumps.
 
 ![Main Window](./images/main-window.jpg)
 
