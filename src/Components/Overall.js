@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Box, ListItemText, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 

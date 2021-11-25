@@ -1,41 +1,10 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import {
-  IconButton,
-  ListItem,
-  List,
-  ListItemText,
-  Checkbox,
-  ListItemIcon,
-  ListItemButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  FormGroup,
-  FormControlLabel,
-} from '@mui/material';
+import { IconButton, Checkbox, Dialog, DialogTitle, DialogContent, FormGroup, FormControlLabel } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { filter, clone } from 'lodash';
 import { setEnabledColumns } from '../../Reducers/pagination';
 import CloseIcon from '@mui/icons-material/Close';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  height: {
-    xs: '100%',
-    sm: 'auto',
-  },
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  overflow: 'auto',
-};
 
 export default function ColumnsButtonAndModal() {
   const dispatch = useDispatch();

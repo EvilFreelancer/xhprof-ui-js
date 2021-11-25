@@ -18,8 +18,8 @@ export const getItemFromStorage = (key, defaultValue = '') => {
  * Get array or object from localStorage
  *
  * @param {string} key
- * @param {{}|[]} defaultValue
- * @return {{}|[]}
+ * @param {{any}|[any]} defaultValue
+ * @return {{any}|[any]}
  */
 export const getArrayFromStorage = (key, defaultValue = []) => {
   let value = localStorage.getItem(key);
@@ -44,7 +44,7 @@ export const saveItemToStorage = (key, value) => {
  * Save array or object o localStorage
  *
  * @param {string} key
- * @param {{}|[]} value
+ * @param {{any}|[any]} value
  */
 export const saveArrayToStorage = (key, value) => {
   saveItemToStorage(key, JSON.stringify(value));
