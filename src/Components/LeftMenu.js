@@ -7,9 +7,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { MyDropzone } from './MyDropzone';
-import { setSelectedFile } from '../Reducers/files';
+import { setSelectedFile, deleteFile } from '../Reducers/files';
 import { makeStyles } from '@mui/styles';
 import { createTheme } from '@material-ui/core/styles';
+import { IconButton, ListItemSecondaryAction } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { formatBytes } from '../Utils/StringFormat';
 
 const drawerWidth = 290;
 const theme = createTheme();
@@ -28,12 +31,16 @@ export default function LeftMenu() {
   const files = useSelector((state) => state.files.files);
   const selected = useSelector((state) => state.files.selected);
 
-  const handleFileOpen = (e, fileId) => {
+  const handleFileOpen = (fileId) => {
     if (selected.id === fileId) {
       dispatch(setSelectedFile(null));
     } else {
       dispatch(setSelectedFile(fileId));
     }
+  };
+
+  const handleDeleteFile = (fileId) => {
+    dispatch(deleteFile(fileId));
   };
 
   return (
@@ -55,22 +62,32 @@ export default function LeftMenu() {
             {files.map((file, index) => (
               <ListItem
                 button
+                title={file.name}
+                onClick={() => handleFileOpen(file.id)}
                 className={file.id === selected.id ? classes.activeItem : ''}
                 key={`result-` + index}
-                onClick={(e) => handleFileOpen(e, file.id)}
               >
                 <ListItemText
-                  title={file.name}
-                  primary={file.name}
                   primaryTypographyProps={{
-                    variant: 'subtitle2',
                     style: {
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                     },
                   }}
+                  primary={file.name}
+                  secondary={'Size: ' + formatBytes(file.size)}
                 />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleDeleteFile(file.id)}
+                    title={'Remove ' + file.name}
+                  >
+                    <CloseIcon color={'primary'} />
+                  </IconButton>
+                </ListItemSecondaryAction>
               </ListItem>
             ))}
           </List>
