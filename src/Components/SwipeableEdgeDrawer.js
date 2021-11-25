@@ -85,8 +85,8 @@ function SwipeableEdgeDrawer(props) {
           sx={{
             position: 'absolute',
             top: -drawerBleeding,
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
+            // borderTopLeftRadius: 8,
+            // borderTopRightRadius: 8,
             visibility: 'visible',
             right: 0,
             left: 0,

@@ -175,7 +175,10 @@ export function SimpleTable({ results }) {
 
   return (
     <div>
-      <Table fixedheader="false" style={{ tableLayout: 'auto', marginBottom: '50px' }}>
+      <Table
+        fixedheader="false"
+        style={{ tableLayout: 'auto', marginBottom: useMediaQuery('(min-width:600px)') ? '50px' : '115px' }}
+      >
         <TableHead>
           <TableRow>
             {columns.map((header, index) => (
@@ -193,7 +196,7 @@ export function SimpleTable({ results }) {
                   direction={sortDirection}
                   onClick={() => handleSort(header.name)}
                 >
-                  <Typography variant="body" className={classes.bold}>
+                  <Typography variant="body" noWrap className={classes.bold}>
                     {header.label}
                   </Typography>
                 </TableSortLabel>
@@ -253,6 +256,9 @@ export function SimpleTable({ results }) {
           dispatch(setItemsPerPage(element.target.value));
         }}
         className={classes.fab}
+        style={{
+          bottom: useMediaQuery('(min-width:600px)') ? '10px' : '56px',
+        }}
         count={
           results.filter((string) => {
             return filterString(string) && filterStringParentChild(string);
@@ -261,9 +267,9 @@ export function SimpleTable({ results }) {
         page={parseInt(page)}
         onPageChange={onPageChange}
         color="standard"
-        size="medium"
-        showFirstButton={useMediaQuery('(min-width:600px)')}
-        showLastButton={useMediaQuery('(min-width:600px)')}
+        size={!useMediaQuery('(min-width:600px)') ? 'medium' : 'small'}
+        showFirstButton
+        showLastButton
       />
     </div>
   );
