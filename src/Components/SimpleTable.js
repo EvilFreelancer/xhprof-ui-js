@@ -18,11 +18,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 // Custom styles
 const useStyles = makeStyles({
   cell: {
-    whiteSpace: 'nowrap',
     maxWidth: '200px',
     width: '100px',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
   },
   sticky: {
     position: 'sticky',
@@ -122,9 +119,7 @@ export function SimpleTable({ results }) {
     }
 
     let tmpFilter = filterParentChild.toLowerCase();
-    return (
-      string.function.toLowerCase().indexOf(tmpFilter) !== -1 || string.parent.toLowerCase().indexOf(tmpFilter) !== -1
-    );
+    return string.function.toLowerCase() === tmpFilter || string.parent.toLowerCase() === tmpFilter;
   };
 
   const handleFilterParentChild = (value) => {
@@ -234,6 +229,11 @@ export function SimpleTable({ results }) {
                             if ('parent' === column.name) {
                               handleFilterParentChild(result.parent);
                             }
+                          }}
+                          style={{
+                            overflowWrap: 'break-word',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
                           }}
                           className={['function', 'parent'].includes(column.name) ? classes.clickable : ''}
                         >

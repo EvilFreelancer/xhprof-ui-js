@@ -46,7 +46,7 @@ export function MyDropzone({ dropzoneText = 'Drag and drop a files here or click
         filesLimit={100}
         showPreviewsInDropzone={false}
         showAlerts={false}
-        fileObjects
+        fileObjects={[]}
       />
     </div>
   );

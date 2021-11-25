@@ -51,9 +51,9 @@ export default function ColumnsButtonAndModal() {
           <IconButton
             aria-label="close"
             onClick={handleClose}
-            paddingLeft={4}
-            paddingRight={4}
-            paddingTop={2}
+            paddingleft={4}
+            paddingright={4}
+            paddingtop={2}
             sx={{
               position: 'absolute',
               right: 13,
