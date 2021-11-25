@@ -41,10 +41,12 @@ export default function LeftMenu() {
       variant="permanent"
       sx={{
         width: drawerWidth,
+        height: '100%',
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         display: { xs: 'none', sm: 'block' },
       }}
+      containerStyle={{ height: 'calc(100% - 64px)', top: 64 }}
     >
       <Toolbar />
       <Box sx={{ overflow: 'auto' }}>

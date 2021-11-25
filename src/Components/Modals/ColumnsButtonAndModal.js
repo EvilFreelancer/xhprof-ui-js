@@ -87,10 +87,7 @@ export default function ColumnsButtonAndModal() {
             paddingTop={2}
             sx={{
               position: 'absolute',
-              right: {
-                xs: 23,
-                sm: 13,
-              },
+              right: 13,
               top: 13,
               color: (theme) => theme.palette.grey[500],
             }}

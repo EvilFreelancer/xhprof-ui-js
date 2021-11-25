@@ -4,6 +4,8 @@ import { Box, CssBaseline } from '@mui/material';
 import { FilePreview } from '../Components/FilePreview';
 import LeftMenu from '../Components/LeftMenu';
 import { useSelector } from 'react-redux';
+import SwipeableEdgeDrawer from '../Components/SwipeableEdgeDrawer';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Dashboard() {
   const [showPreview, setShowPreview] = useState(false);
@@ -23,6 +25,7 @@ export default function Dashboard() {
       <Navbar />
       <LeftMenu />
       <Box sx={{ flexGrow: 1, p: 3 }}>{showPreview && <FilePreview />}</Box>
+      {!useMediaQuery('(min-width:600px)') && <SwipeableEdgeDrawer />}
     </Box>
   );
 }
