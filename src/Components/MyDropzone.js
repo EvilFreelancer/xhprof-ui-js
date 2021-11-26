@@ -38,16 +38,14 @@ export function MyDropzone({ dropzoneText = 'Drag and drop a files here or click
   }, []);
 
   return (
-    <div>
-      <DropzoneAreaBase
-        dropzoneText={dropzoneText}
-        dropzoneClass={classes.dropzoneArea}
-        onDrop={onDrop}
-        filesLimit={100}
-        showPreviewsInDropzone={false}
-        showAlerts={false}
-        fileObjects={[]}
-      />
-    </div>
+    <DropzoneAreaBase
+      dropzoneText={dropzoneText}
+      dropzoneClass={classes.dropzoneArea}
+      onDrop={onDrop}
+      filesLimit={100}
+      showPreviewsInDropzone={false}
+      showAlerts={false}
+      fileObjects={[]}
+    />
   );
 }

@@ -172,7 +172,8 @@ export function SimpleTable({ results }) {
     <div>
       <Table
         fixedheader="false"
-        style={{ tableLayout: 'auto', marginBottom: useMediaQuery('(min-width:600px)') ? '50px' : '115px' }}
+        style={{ tableLayout: 'auto', marginBottom: useMediaQuery('(min-width:600px)') ? '44px' : '66px' }}
+        sx={{ boxShadow: 3 }}
       >
         <TableHead>
           <TableRow>
@@ -248,7 +249,7 @@ export function SimpleTable({ results }) {
         </TableBody>
       </Table>
       <TablePagination
-        sx={{ boxShadow: 4 }}
+        sx={{ boxShadow: 3 }}
         justifycontent="center"
         rowsPerPage={parseInt(itemsPerPage)}
         rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]}
@@ -256,9 +257,7 @@ export function SimpleTable({ results }) {
           dispatch(setItemsPerPage(element.target.value));
         }}
         className={classes.fab}
-        style={{
-          bottom: useMediaQuery('(min-width:600px)') ? '10px' : '56px',
-        }}
+        style={{ bottom: '8px' }}
         count={
           results.filter((string) => {
             return filterString(string) && filterStringParentChild(string);
@@ -267,7 +266,7 @@ export function SimpleTable({ results }) {
         page={parseInt(page)}
         onPageChange={onPageChange}
         color="standard"
-        size={!useMediaQuery('(min-width:600px)') ? 'medium' : 'small'}
+        size="medium"
         showFirstButton
         showLastButton
       />

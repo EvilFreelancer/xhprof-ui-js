@@ -57,9 +57,9 @@ export default function LeftMenu() {
     >
       <Toolbar />
       <Box sx={{ overflow: 'auto' }}>
-        {!!files && (
-          <List>
-            {files.map((file, index) => (
+        <List>
+          {!!files &&
+            files.map((file, index) => (
               <ListItem
                 button
                 title={file.name}
@@ -90,9 +90,6 @@ export default function LeftMenu() {
                 </ListItemSecondaryAction>
               </ListItem>
             ))}
-          </List>
-        )}
-        <List>
           <ListItem>
             <MyDropzone />
           </ListItem>
