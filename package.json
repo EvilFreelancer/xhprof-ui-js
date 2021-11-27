@@ -1,6 +1,29 @@
 {
   "name": "simple-tests",
-  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EvilFreelancer/xhprof-ui-js.git"
+  },
+  "author": {
+    "name": "Paul Rock",
+    "email": "paul@drteam.rocks",
+    "url": "https://github.com/EvilFreelancer"
+  },
+  "license": "MIT",
+  "description": "Modern, flexible and mobile friendly application for analyzing PHP XHProf dumps",
+  "homepage": "https://github.com/EvilFreelancer/xhprof-ui-js",
+  "bugs": {
+    "url": "https://github.com/EvilFreelancer/xhprof-ui-js/issues",
+    "email": "paul@drteam.rocks"
+  },
+  "readme": "https://github.com/EvilFreelancer/xhprof-ui-js/blob/main/README.md",
+  "keywords": [
+    "xhprof",
+    "xhprof-ui",
+    "react",
+    "redux",
+    "material-ui"
+  ],
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.6.0",
