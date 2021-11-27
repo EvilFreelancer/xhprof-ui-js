@@ -5,7 +5,7 @@ viewing [XHProf](https://github.com/longxinH/xhprof) dumps.
 
 | Desktop | Mobile |
 |---------|--------|
-|![Main Window Dektop](./images/main-window.jpg)|![Main Window Mobile](./images/main-window-mobile.jpg)|
+|![Main Window Dektop](./images/main-window.jpg)|![Main Window Mobile](./images/main-window-mobile.jpg)![Dropzone Mobile](./images/dropzone-mobile.jpg)|
 
 ## Table of Contents
 
