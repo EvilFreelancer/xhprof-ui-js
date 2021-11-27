@@ -7,7 +7,7 @@ export function Overall() {
   const selected = useSelector((state) => state.files.selected);
 
   return (
-    <Accordion style={{ boxShadow: 'none' }}>
+    <Accordion sx={{ boxShadow: 3 }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
         <Typography>Overall Summary</Typography>
       </AccordionSummary>

@@ -2,6 +2,7 @@ import { alpha, styled } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 
 export const Search = styled('div')(({ theme }) => ({
+  display: { xs: 'none', sm: 'block' },
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),

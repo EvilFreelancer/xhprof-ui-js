@@ -14,10 +14,11 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { formatBytes } from '../Utils/StringFormat';
-import { IconButton, ListItemSecondaryAction } from '@mui/material';
+import { Chip, IconButton, ListItemSecondaryAction } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { createTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@mui/styles';
+import { setFilterParentChild } from '../Reducers/pagination';
 
 const drawerBleeding = 56;
 
@@ -112,7 +113,9 @@ function SwipeableEdgeDrawer(props) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>{selected.name ?? 'Choose XHProf report'}</Typography>
+          <Typography sx={{ p: 2, textAlign: 'center', color: 'text.secondary' }}>
+            {files.length < 1 ? 'Upload XHProf reports' : selected.name ?? 'Choose XHProf report'}
+          </Typography>
         </StyledBox>
         <StyledBox sx={{ pb: 2, height: '100%', overflow: 'auto' }}>
           <List>

@@ -1,10 +1,12 @@
 import React from 'react';
-import { AppBar, Chip, CssBaseline, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Chip, CssBaseline, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from './Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter, setFilterParentChild } from '../Reducers/pagination';
 import ColumnsButtonAndModal from './Modals/ColumnsButtonAndModal';
+import SearchButtonAndModal from './Modals/SearchButtonAndModal';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -42,33 +44,35 @@ export default function Navbar() {
           Xhprof-UI.js
         </Typography>
         {!!filterParentChild && (
-          <Typography>
+          <Typography sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Chip
+              size={'medium'}
               label={filterParentChild}
-              // variant="outlined"
+              sx={{ fontSize: { xs: '1rem', sm: '1.3rem' } }}
               color="info"
               onDelete={handleDeleteFilterParentChild}
             />
           </Typography>
         )}
         {!!selected.json && (
-          <Search
-            sx={{
-              display: {
-                xs: 'none',
-              },
-            }}
-          >
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search..."
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => handleFilter(e)}
-              value={filter}
-            />
-          </Search>
+          <Box>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search..."
+                  inputProps={{ 'aria-label': 'search' }}
+                  onChange={(e) => handleFilter(e)}
+                  value={filter}
+                />
+              </Search>
+            </Box>
+            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+              <SearchButtonAndModal />
+            </Box>
+          </Box>
         )}
         <ColumnsButtonAndModal />
       </Toolbar>
