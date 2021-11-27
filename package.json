@@ -11,7 +11,6 @@
   },
   "license": "MIT",
   "description": "Modern, flexible and mobile friendly application for analyzing PHP XHProf dumps",
-  "homepage": "https://github.com/EvilFreelancer/xhprof-ui-js",
   "bugs": {
     "url": "https://github.com/EvilFreelancer/xhprof-ui-js/issues",
     "email": "paul@drteam.rocks"
@@ -32,6 +31,7 @@
     "@mui/material": "^5.2.1",
     "@mui/styles": "^5.2.1",
     "@mui/x-data-grid": "^5.0.1",
+    "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -48,7 +48,6 @@
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {
-    "@reduxjs/toolkit": "^1.6.2",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.3.6",
@@ -56,7 +55,8 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "serve": "^13.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -64,7 +64,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint \"{src,apps,libs,test}/**/*.js\" --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}'"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}'",
+    "serve": "serve -s ./build"
   },
   "eslintConfig": {
     "extends": [
