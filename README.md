@@ -7,6 +7,16 @@ viewing [XHProf](https://github.com/longxinH/xhprof) dumps.
 |---------|--------|
 |![Main Window Dektop](./images/main-window.jpg)|![Main Window Mobile](./images/main-window-mobile.jpg)|
 
+## Table of Contents
+
+* [Features](#Features)
+    * [Selecting visible columns](#Selecting-visible-columns)
+    * [Searching and filtering](#Searching-and-filtering)
+    * [Order by column](#Order-by-column)
+    * [Pagination](#Pagination)
+* [How to install](#How-to-install)
+* [Other](#Other)
+
 ## Features
 
 The main idea of this application is to make it possible to read dumps
