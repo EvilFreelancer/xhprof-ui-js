@@ -40,6 +40,8 @@ Sometimes you need just check Wall Time in combination with amount of
 function Calls, on exists XHProf viewers you can't turn off not required
 columns, but this app support this feature.
 
+Button which opens this modal can be found on the left side of a main menu.
+
 | Desktop | Mobile |
 |---------|--------|
 |![Columns Dektop](./images/columns.jpg)|![Columns Mobile](./images/columns-mobile.jpg)|
@@ -57,11 +59,17 @@ search.
 ### Order by column
 
 The application may order XHProf results in ASC and DESC order,
-just click to column on table header.
+just click to column at table header.
 
 ### Pagination
 
-On left bottom side of the application you may find pagination component.
+On "desktop view" at the left bottom corner of the application you may find a pagination component.
+
+On "mobile view" in top menu you may find "book" icon, this icon opens a pagination modal.
+
+| Desktop | Mobile |
+|---------|--------|
+|![Pagination Dektop](./images/pagination.jpg)|![Pagination Mobile](./images/pagination-mobile.jpg)|
 
 ## How to install
 
