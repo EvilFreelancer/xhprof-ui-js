@@ -90,6 +90,7 @@ function SwipeableEdgeDrawer(props) {
         }}
       />
       <SwipeableDrawer
+        sx={{ boxShadow: 3 }}
         container={container}
         anchor="bottom"
         open={open}
@@ -103,6 +104,7 @@ function SwipeableEdgeDrawer(props) {
       >
         <StyledBox
           sx={{
+            borderTop: '1px solid #ddd',
             position: 'absolute',
             top: -drawerBleeding,
             borderTopLeftRadius: 8,

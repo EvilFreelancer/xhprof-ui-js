@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -11,9 +11,17 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage, setFilterParentChild, setItemsPerPage, setSortDirection, setSortBy } from '../Reducers/pagination';
+import {
+  setPage,
+  setFilterParentChild,
+  setItemsPerPage,
+  setSortDirection,
+  setSortBy,
+  setCount,
+} from '../Reducers/pagination';
 import { formatMicroseconds, formatBytes, formatNumber } from '../Utils/StringFormat';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { filterString, filterStringParentChild } from '../Utils/Filters';
 
 // Custom styles
 const useStyles = makeStyles({
@@ -52,6 +60,7 @@ export function SimpleTable({ results }) {
   const filterParentChild = useSelector((state) => state.pagination.filterParentChild);
   const page = useSelector((state) => state.pagination.page);
   const itemsPerPage = useSelector((state) => state.pagination.itemsPerPage);
+  const count = useSelector((state) => state.pagination.count);
 
   // Columns selector from Redux store
   const columns = useSelector((state) => state.pagination.columns);
@@ -81,49 +90,6 @@ export function SimpleTable({ results }) {
         dispatch(setSortDirection('desc'));
       }
     }
-  };
-
-  /**
-   * What to do if page was changed
-   * @param event
-   * @param pageNumber
-   */
-  const onPageChange = (event, pageNumber) => {
-    dispatch(setPage(pageNumber));
-  };
-
-  /**
-   * Method for filtering items by string
-   * @param string
-   * @returns {boolean}
-   */
-  const filterString = (string) => {
-    if (!filter) {
-      return true;
-    }
-
-    let tmpFilter = filter.toLowerCase();
-    return (
-      string.function.toLowerCase().indexOf(tmpFilter) !== -1 || string.parent.toLowerCase().indexOf(tmpFilter) !== -1
-    );
-  };
-
-  /**
-   * Filter by parent or child
-   * @param string
-   * @return {boolean}
-   */
-  const filterStringParentChild = (string) => {
-    if (!filterParentChild) {
-      return true;
-    }
-
-    let tmpFilter = filterParentChild.toLowerCase();
-    return string.function.toLowerCase() === tmpFilter || string.parent.toLowerCase() === tmpFilter;
-  };
-
-  const handleFilterParentChild = (value) => {
-    dispatch(setFilterParentChild(value));
   };
 
   /**
@@ -168,6 +134,16 @@ export function SimpleTable({ results }) {
     }
   };
 
+  useEffect(function () {
+    let count =
+      results.length > 0 &&
+      results.filter((string) => {
+        return filterString(string, filter) && filterStringParentChild(string, filterParentChild);
+      }).length;
+
+    dispatch(setCount(count));
+  });
+
   return (
     <div>
       <Table
@@ -204,7 +180,7 @@ export function SimpleTable({ results }) {
           {results.length > 0 &&
             results
               .filter((string) => {
-                return filterString(string) && filterStringParentChild(string);
+                return filterString(string, filter) && filterStringParentChild(string, filterParentChild);
               })
               .slice(page * itemsPerPage, (page + 1) * itemsPerPage)
               .map((result, index) => (
@@ -225,10 +201,10 @@ export function SimpleTable({ results }) {
                           variant="body1"
                           onClick={() => {
                             if ('function' === column.name) {
-                              handleFilterParentChild(result.function);
+                              dispatch(setFilterParentChild(result.function));
                             }
                             if ('parent' === column.name) {
-                              handleFilterParentChild(result.parent);
+                              dispatch(setFilterParentChild(result.parent));
                             }
                           }}
                           style={{
@@ -249,7 +225,7 @@ export function SimpleTable({ results }) {
         </TableBody>
       </Table>
       <TablePagination
-        sx={{ boxShadow: 3 }}
+        sx={{ boxShadow: 3, display: { xs: 'none', sm: 'block' } }}
         justifycontent="center"
         rowsPerPage={parseInt(itemsPerPage)}
         rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]}
@@ -258,13 +234,9 @@ export function SimpleTable({ results }) {
         }}
         className={classes.fab}
         style={{ bottom: '8px' }}
-        count={
-          results.filter((string) => {
-            return filterString(string) && filterStringParentChild(string);
-          }).length
-        }
-        page={parseInt(page)}
-        onPageChange={onPageChange}
+        count={count}
+        page={page}
+        onPageChange={(e, pageNumber) => dispatch(setPage(pageNumber))}
         color="standard"
         size="medium"
         showFirstButton

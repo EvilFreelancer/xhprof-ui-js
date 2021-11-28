@@ -7,6 +7,7 @@ export const filterSlice = createSlice({
     filter: '',
     filterParentChild: '',
     page: 0,
+    count: 0,
     itemsPerPage: getItemFromStorage('itemsPerPage', 100),
     sortDirection: getItemFromStorage('sortDirection', 'desc'),
     sortBy: getItemFromStorage('sortBy', 'wtime'),
@@ -115,6 +116,9 @@ export const filterSlice = createSlice({
       state.sortBy = action.payload;
       saveItemToStorage('sortBy', action.payload);
     },
+    setCount: (state, action) => {
+      state.count = parseInt(action.payload);
+    },
   },
 });
 
@@ -127,6 +131,7 @@ export const {
   setItemsPerPage,
   setSortDirection,
   setSortBy,
+  setCount,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

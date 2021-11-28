@@ -32,7 +32,7 @@ export default function SearchButtonAndModal() {
 
   return (
     <div>
-      <IconButton size="large" edge="end" color="inherit" aria-label="enabledColumns" onClick={handleOpen}>
+      <IconButton size="large" color="inherit" aria-label="enabledColumns" onClick={handleOpen}>
         <SearchIcon />
       </IconButton>
       <Dialog

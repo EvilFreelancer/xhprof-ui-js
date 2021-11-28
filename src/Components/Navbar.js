@@ -7,6 +7,7 @@ import { setFilter, setFilterParentChild } from '../Reducers/pagination';
 import ColumnsButtonAndModal from './Modals/ColumnsButtonAndModal';
 import SearchButtonAndModal from './Modals/SearchButtonAndModal';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import PaginationButtonAndModal from './Modals/PaginationButtonAndModal';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -54,24 +55,27 @@ export default function Navbar() {
             />
           </Typography>
         )}
-        {!!selected.json && (
-          <Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search..."
-                  inputProps={{ 'aria-label': 'search' }}
-                  onChange={(e) => handleFilter(e)}
-                  value={filter}
-                />
-              </Search>
-            </Box>
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <SearchButtonAndModal />
-            </Box>
+        <Box>
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search..."
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={(e) => handleFilter(e)}
+                value={filter}
+              />
+            </Search>
+          </Box>
+          <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+            <SearchButtonAndModal />
+          </Box>
+        </Box>
+        {!!selected.name && (
+          <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+            <PaginationButtonAndModal />
           </Box>
         )}
         <ColumnsButtonAndModal />
