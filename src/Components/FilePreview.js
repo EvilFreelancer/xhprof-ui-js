@@ -28,11 +28,9 @@ export function FilePreview() {
 
   return (
     <div>
-      <Grid sx={{ mt: { xs: 4, sm: 6 } }}>
-        <Grid item xs={12} sm={6} md={5} mb={1}>
-          <Box>
-            <Overall />
-          </Box>
+      <Grid container spacing={1} sx={{ mt: { xs: 4, sm: 5 } }}>
+        <Grid item xs={12} sm={6} md={5} lg={4}>
+          <Overall />
         </Grid>
         <Grid item xs={12}>
           <Box>

@@ -1,13 +1,14 @@
 import React from 'react';
-import { AppBar, Box, Chip, CssBaseline, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Chip, CssBaseline, IconButton, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from './Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter, setFilterParentChild } from '../Reducers/pagination';
 import ColumnsButtonAndModal from './Modals/ColumnsButtonAndModal';
 import SearchButtonAndModal from './Modals/SearchButtonAndModal';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import PaginationButtonAndModal from './Modals/PaginationButtonAndModal';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import { switchTreeView } from '../Reducers/mode';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -30,6 +31,13 @@ export default function Navbar() {
     dispatch(setFilterParentChild(null));
   };
 
+  /**
+   * Choose which mode need to show
+   */
+  const handleTreeView = () => {
+    dispatch(switchTreeView());
+  };
+
   return (
     <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <CssBaseline />
@@ -38,7 +46,8 @@ export default function Navbar() {
         sx={{
           minHeight: 64,
           left: 0,
-          px: 3,
+          pl: 2,
+          pr: 3,
         }}
       >
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
@@ -77,6 +86,11 @@ export default function Navbar() {
           <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
             <PaginationButtonAndModal />
           </Box>
+        )}
+        {!!selected.name && (
+          <IconButton size="large" edge="end" color="inherit" aria-label="enabledColumns" onClick={handleTreeView}>
+            <AccountTreeIcon />
+          </IconButton>
         )}
         <ColumnsButtonAndModal />
       </Toolbar>

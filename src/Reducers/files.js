@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { find, remove } from 'lodash';
-import { parseJson } from '../Utils/FilesProcessing';
+import { parseTableFromJson, parseTreeFromJson } from '../Utils/FilesProcessing';
 
 export const filesSlice = createSlice({
   name: 'files',
@@ -19,7 +19,9 @@ export const filesSlice = createSlice({
      * @return {number}
      */
     addFile: (state, action) => {
-      let parsedJson = parseJson(action.payload.json);
+      let parsedTableJson = parseTableFromJson(action.payload.json);
+      let parsedTreeJson = parseTreeFromJson(parsedTableJson.output);
+      console.log(parsedTreeJson);
 
       // Save file
       let payload = {
@@ -27,8 +29,9 @@ export const filesSlice = createSlice({
         name: action.payload.file.name,
         size: action.payload.file.size,
         json: action.payload.json,
-        result: parsedJson.output,
-        callsTotal: parsedJson.callsTotal,
+        result: parsedTableJson.output,
+        tree: parsedTreeJson,
+        callsTotal: parsedTableJson.callsTotal,
         main: action.payload.json['main()'],
       };
       state.files.push(payload);

@@ -1,3 +1,5 @@
+import lodash from 'lodash';
+
 /**
  * Convert JSON to array with calculated details
  * @param json
@@ -20,7 +22,7 @@
  *  }]
  * }}
  */
-export const parseJson = (json) => {
+export const parseTableFromJson = (json) => {
   // Main object for calculation
   let main = json['main()'];
 
@@ -75,4 +77,32 @@ export const parseJson = (json) => {
   // TODO: Here probably will also be need some additional operations
 
   return { callsTotal: callsTotal, output: output };
+};
+
+/**
+ * Convert input JSON to tree format for D3.js chart
+ * @param list
+ */
+export const parseTreeFromJson = (list) => {
+  let map = {},
+    node,
+    roots = [],
+    i;
+
+  for (i = 0; i < list.length; i += 1) {
+    map[list[i].function] = i; // initialize the map
+    list[i].children = []; // initialize the children
+    list[i].name = list[i].function;
+  }
+
+  for (i = 0; i < list.length; i += 1) {
+    node = list[i];
+    if (node.parent !== '') {
+      node.name = node.function;
+      list[map[node.parent]].children.push(node);
+    } else {
+      roots.push(node);
+    }
+  }
+  return roots;
 };
