@@ -98,6 +98,18 @@ npm run build
 
 This command build the app for production to the `build` folder.
 
+## Usage
+How to save xhprof data in the correct format for this tool:
+```
+xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
+
+//your code to analyze here
+
+$xhprof_data = xhprof_disable();
+
+file_put_contents('/tmp/xhprof.json', json_encode($xhprof_data));
+```
+
 ## Other
 
 This application created using following technologies:
